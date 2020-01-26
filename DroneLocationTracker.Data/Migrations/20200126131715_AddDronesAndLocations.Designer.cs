@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DroneLocationTracker.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20200126121342_AddDronesAndLocations")]
+    [Migration("20200126131715_AddDronesAndLocations")]
     partial class AddDronesAndLocations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,10 +24,16 @@ namespace DroneLocationTracker.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("LastLocationId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.HasKey("DroneId");
+
+                    b.HasIndex("LastLocationId")
+                        .IsUnique();
 
                     b.ToTable("Drones");
                 });
@@ -49,18 +55,15 @@ namespace DroneLocationTracker.Data.Migrations
 
                     b.HasKey("LocationId");
 
-                    b.HasIndex("DroneId");
-
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("DroneLocationTracker.Data.Models.Location", b =>
+            modelBuilder.Entity("DroneLocationTracker.Data.Models.Drone", b =>
                 {
-                    b.HasOne("DroneLocationTracker.Data.Models.Drone", "Drone")
-                        .WithMany("Locations")
-                        .HasForeignKey("DroneId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("DroneLocationTracker.Data.Models.Location", "LastLocation")
+                        .WithOne("Drone")
+                        .HasForeignKey("DroneLocationTracker.Data.Models.Drone", "LastLocationId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

@@ -22,15 +22,4 @@ namespace DroneLocationTracker.Data.Models
 		// Navigation properties.
 		public Drone Drone { get; set; }
 	}
-
-	public class LocationConfiguration : IEntityTypeConfiguration<Location>
-	{
-		public void Configure(EntityTypeBuilder<Location> builder)
-		{
-			builder.HasOne(x => x.Drone)
-				.WithMany(x => x.Locations)
-				.HasForeignKey(x => x.DroneId)
-				.OnDelete(DeleteBehavior.Cascade);
-		}
-	}
 }

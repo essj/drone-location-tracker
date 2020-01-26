@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DroneLocationTracker.Data.Models
@@ -13,7 +12,20 @@ namespace DroneLocationTracker.Data.Models
 
 		public string Name { get; set; }
 
+		public Guid? LastLocationId { get; set; }
+
 		// Navigation properties.
-		public List<Location> Locations { get; set; }
+		public Location LastLocation { get; set; }
+	}
+
+	public class DroneConfiguration : IEntityTypeConfiguration<Drone>
+	{
+		public void Configure(EntityTypeBuilder<Drone> builder)
+		{
+			builder.HasOne(x => x.LastLocation)
+				.WithOne(x => x.Drone)
+				.HasForeignKey<Drone>(x => x.LastLocationId)
+				.OnDelete(DeleteBehavior.Restrict);
+		}
 	}
 }
