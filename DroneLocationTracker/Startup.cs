@@ -1,5 +1,6 @@
 using AutoMapper;
 using DroneLocationTracker.Data;
+using DroneLocationTracker.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -34,10 +35,10 @@ namespace DroneLocationTracker
 				});
 			});
 
-			services.AddMvc(options =>
-			{
-				options.EnableEndpointRouting = false;
-			})
+			services.AddCors();
+
+			services
+				.AddMvc(options => options.EnableEndpointRouting = false)
 				.SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
 			services.AddDbContext<Context>(options =>
@@ -58,10 +59,18 @@ namespace DroneLocationTracker
 				app.UseHsts();
 			}
 
-			app.UseHttpsRedirection();
-
 			var automapperConfiguration = app.ApplicationServices.GetRequiredService<AutoMapper.IConfigurationProvider>();
 			automapperConfiguration.AssertConfigurationIsValid();
+
+			var corsOptions = Configuration.GetSection("Cors").Get<CorsOptions>();
+			app.UseCors(builder =>
+			{
+				builder
+					.AllowAnyMethod()
+					.AllowAnyHeader()
+					.AllowCredentials()
+					.WithOrigins(corsOptions.AllowOrigin.Split(','));
+			});
 
 			app.UseMvc();
 
