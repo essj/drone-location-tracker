@@ -19,6 +19,8 @@ namespace DroneLocationTracker.Data.Models
 
 		public double Longitude { get; set; }
 
+		public DateTimeOffset Timestamp { get; set; }
+
 		// Navigation properties.
 		public Drone Drone { get; set; }
 	}
