@@ -1,5 +1,6 @@
 const Service = {
 	Client: Symbol(),
+	Drone: Symbol(),
 	History: Symbol(),
 };
 
