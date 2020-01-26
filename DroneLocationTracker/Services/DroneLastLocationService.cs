@@ -1,5 +1,4 @@
 ﻿using DroneLocationTracker.Controllers.Locations;
-using DroneLocationTracker.Data.Models;
 using System;
 
 namespace DroneLocationTracker.Services
