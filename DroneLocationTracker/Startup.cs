@@ -1,7 +1,9 @@
 using AutoMapper;
+using DroneLocationTracker.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,6 +39,11 @@ namespace DroneLocationTracker
 				options.EnableEndpointRouting = false;
 			})
 				.SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+			services.AddDbContext<Context>(options =>
+			{
+				options.UseSqlite("Data Source=dronelocationtracker.db");
+			});
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
