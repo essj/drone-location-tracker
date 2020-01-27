@@ -25,7 +25,4 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
-	background-color: map-get($colours, background);
-	color: map-get($colours, foreground);
 }
