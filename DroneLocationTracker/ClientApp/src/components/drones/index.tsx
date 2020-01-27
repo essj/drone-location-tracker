@@ -1,5 +1,4 @@
 import React from "react";
-import moment from "moment";
 
 import './index.scss';
 
@@ -9,7 +8,15 @@ import {
 	Service,
 	IDroneDto,
 } from '../../services';
-import { Table, Container, Card } from "react-bootstrap";
+import {
+	Button,
+	Card,
+	Container,
+	Spinner,
+	Table,
+} from "react-bootstrap";
+
+const Drone = require('../../resources/drone.svg').default;
 
 interface Props {
 }
@@ -18,6 +25,7 @@ interface State {
 	drones: IDroneDto[];
 
 	isLoading: boolean;
+	hasError: boolean;
 }
 
 class Drones extends React.Component<Props, State> {
@@ -29,19 +37,45 @@ class Drones extends React.Component<Props, State> {
 		this.state = {
 			drones: [],
 
-			isLoading: true,
+			isLoading: false,
+			hasError: false,
 		};
 	}
 
 	public async componentDidMount() {
-		const drones = await this._droneService.list();
+		this.setState({ isLoading: true });
 
-		this.setState({ drones });
+		try {
+			const drones = await this._droneService.list();
+
+			this.setState({ drones, hasError: false });
+		} catch {
+			this.setState({ hasError: true });	
+		} finally {
+			this.setState({ isLoading: false });
+		}
 	}
 
 	render() {
+		if (this.state.isLoading) {
+			return (
+				<Spinner animation="border" variant="info" />
+			);
+		}
+
+		if (this.state.hasError) {
+			return (
+				<div className="centred">
+					<img src={Drone} alt="drone" className="small" />
+					<h5>Error fetching drones.</h5>
+					<Button variant="link" onClick={() => window.location.reload()}>Try again?</Button>
+				</div>
+			);
+		}
+
 		return (
 			<Container>
+				<h2 className="heading">Drones</h2>
 				<Card>
 					<Card.Body>
 						<Table hover>

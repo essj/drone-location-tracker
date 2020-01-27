@@ -45,6 +45,7 @@ module.exports = {
 					},
 				],
 			},
+			{ test: /\.svg$/, loader: 'file-loader?name=[hash].[ext]' },
 		],
 	},
 	resolve: {
