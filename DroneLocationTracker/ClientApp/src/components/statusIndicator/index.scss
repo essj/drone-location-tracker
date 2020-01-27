@@ -1,0 +1,102 @@
+@import "node_modules/bootstrap/scss/bootstrap";
+
+$radius: 5px;
+$diameter: $radius * 2;
+
+.status {
+	$status-indicator: "> div";
+	$status-pulse: "&:before, &:after";
+
+	&__offline {
+		#{$status-indicator} {
+			$colour: $red;
+			background: $colour;
+
+			#{$status-pulse} {
+				border: 1px solid $colour;
+			}
+		}
+	}
+
+	&__online {
+		#{$status-indicator} {
+			$colour: $green;
+			background: $colour;
+
+			#{$status-pulse} {
+				border: 1px solid $colour;
+			}
+		}
+	}
+
+	&__stale {
+		#{$status-indicator} {
+			$colour: $gray-500;
+			background: $colour;
+
+			#{$status-pulse} {
+				border: 1px solid $colour;
+			}
+		}
+	}
+
+	> div {
+		position: relative;
+		height: $diameter;
+		width: $diameter;
+		//background: $colour;
+		border-radius: 100%;
+
+		&:before, &:after {
+			//border: 1px solid $colour;
+			content: "";
+			width: 100%;
+			display: block;
+			position: absolute;
+			height: auto;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			border-radius: 100%;
+			transform-origin: center center;
+			opacity: 0;
+			box-sizing: border-box;
+		}
+	}
+
+	&.pulse > div {
+		&:before {
+			animation: 1.5s .1s pulse2 infinite linear;
+		}
+		
+		&::after {
+			animation: 1.5s pulse infinite linear;
+		}
+	}
+}
+
+/* Outer circle. */
+@keyframes pulse {
+	0% {
+		transform: scale(3);
+		opacity: .15;
+	}
+
+	100% {
+		transform: scale(3.5);
+		opacity: 0;
+	}
+}
+
+/* Inner circle. */
+@keyframes pulse2 {
+	0% {
+		transform: scale(2);
+		opacity: .5;
+	}
+	100% {
+		transform: scale(2.5);
+		opacity: 0;
+	}
+}
