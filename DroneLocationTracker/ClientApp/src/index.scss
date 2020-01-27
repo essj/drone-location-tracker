@@ -1,6 +1,19 @@
 /* First import our styles to override everything else. */
-
+@import '_variables.scss';
 /* Import other style sheets. */
+@import "node_modules/bootstrap/scss/bootstrap";
+
+/* Bootstrap overrides. */
+.card {
+	border: none;
+}
+
+.table thead th {
+	opacity: 0.5;
+	border: none;
+}
+
+/* Our styles. */
 
 body {
 	margin: 0;
@@ -12,4 +25,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	background-color: map-get($colours, background);
+	color: map-get($colours, foreground);
 }
