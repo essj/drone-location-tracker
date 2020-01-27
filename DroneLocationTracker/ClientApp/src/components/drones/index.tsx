@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import moment from 'moment';
 
 import './index.scss';
 
@@ -14,7 +15,9 @@ import {
 	Container,
 	Spinner,
 	Table,
-} from "react-bootstrap";
+} from 'react-bootstrap';
+
+import StatusIndicator, { StatusIndicatorStatus } from '../statusIndicator';
 
 const Drone = require('../../resources/drone.svg').default;
 
@@ -56,6 +59,44 @@ class Drones extends React.Component<Props, State> {
 		}
 	}
 
+	/**
+	 * An easy to understand time difference from the event occurrence to now.
+	 * e.g. "2 minutes ago"
+	 */
+	private renderHumanTime(time: moment.Moment): JSX.Element | null {
+		const diff = moment().diff(time);
+
+		if (Math.abs(diff) < 10000)
+			return (<>Just now</>);
+
+		// The time is too far in the past, don't display a human time.
+		if (diff < 0)
+			return (null);
+
+		return (<>{time.fromNow()}</>);
+	}
+
+	private renderMovement(time: moment.Moment, speed: number): JSX.Element {
+		let status: StatusIndicatorStatus = "online";
+		if (speed < 5)
+			status = "stale";
+		if (speed === 0)
+			status = "offline";
+
+		return (
+			<div className="last-communicated">
+				<StatusIndicator
+					status={status}
+					pulse={status === "offline"}
+				/>
+				<div className="time">
+					{time.format("YYYY-MM-DD HH:mm:ss")}
+					<small>{this.renderHumanTime(time)}</small>
+				</div>
+			</div>
+		);
+	}
+
 	render() {
 		if (this.state.isLoading) {
 			return (
@@ -82,22 +123,24 @@ class Drones extends React.Component<Props, State> {
 							<thead>
 								<tr>
 									<th>Drone</th>
-									<th>Current Speed</th>
+									<th>Current Speed (m/s)</th>
 									<th>Last Communicated</th>
 								</tr>
 							</thead>
 							<tbody>
 								{this.state.drones.map(x => {
 									return (
-										<tr>
+										<tr key={x.droneId}>
 											<td>
 												<div>
 													<h6><b>{x.name}</b></h6>
 													<small>{x.droneId}</small>
 												</div>
 											</td>
-											<td>0</td>
-											<td>{x.lastLocation ? x.lastLocation.timestamp.format("YYYY-MM-DD HH:MM:SS ZZ") : ""}</td>
+											<td>{x.lastLocation && (Math.round(x.lastLocation.speed * 100) / 100).toFixed(2)}</td>
+											<td>
+												{x.lastLocation && this.renderMovement(x.lastLocation.timestamp, x.lastLocation.speed)}
+											</td>
 										</tr>
 									);
 								})}
