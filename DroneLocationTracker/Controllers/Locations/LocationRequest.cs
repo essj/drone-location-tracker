@@ -16,5 +16,8 @@ namespace DroneLocationTracker.Controllers.Locations
 
 		[Required]
 		public double Longitude { get; set; }
+
+		[Required]
+		public double Speed { get; set; }
 	}
 }

@@ -129,6 +129,7 @@ export class LocationDto implements ILocationDto {
     latitude!: number;
     longitude!: number;
     timestamp!: moment.Moment;
+    speed!: number;
 
     constructor(data?: ILocationDto) {
         if (data) {
@@ -144,6 +145,7 @@ export class LocationDto implements ILocationDto {
             this.latitude = _data["latitude"] !== undefined ? _data["latitude"] : <any>null;
             this.longitude = _data["longitude"] !== undefined ? _data["longitude"] : <any>null;
             this.timestamp = _data["timestamp"] ? moment(_data["timestamp"].toString()) : <any>null;
+            this.speed = _data["speed"] !== undefined ? _data["speed"] : <any>null;
         }
     }
 
@@ -159,6 +161,7 @@ export class LocationDto implements ILocationDto {
         data["latitude"] = this.latitude !== undefined ? this.latitude : <any>null;
         data["longitude"] = this.longitude !== undefined ? this.longitude : <any>null;
         data["timestamp"] = this.timestamp ? this.timestamp.toISOString() : <any>null;
+        data["speed"] = this.speed !== undefined ? this.speed : <any>null;
         return data; 
     }
 }
@@ -167,6 +170,7 @@ export interface ILocationDto {
     latitude: number;
     longitude: number;
     timestamp: moment.Moment;
+    speed: number;
 }
 
 export class DroneDto implements IDroneDto {
@@ -221,6 +225,7 @@ export class LocationRequest implements ILocationRequest {
     droneId!: string;
     latitude!: number;
     longitude!: number;
+    speed!: number;
 
     constructor(data?: ILocationRequest) {
         if (data) {
@@ -236,6 +241,7 @@ export class LocationRequest implements ILocationRequest {
             this.droneId = _data["droneId"] !== undefined ? _data["droneId"] : <any>null;
             this.latitude = _data["latitude"] !== undefined ? _data["latitude"] : <any>null;
             this.longitude = _data["longitude"] !== undefined ? _data["longitude"] : <any>null;
+            this.speed = _data["speed"] !== undefined ? _data["speed"] : <any>null;
         }
     }
 
@@ -251,6 +257,7 @@ export class LocationRequest implements ILocationRequest {
         data["droneId"] = this.droneId !== undefined ? this.droneId : <any>null;
         data["latitude"] = this.latitude !== undefined ? this.latitude : <any>null;
         data["longitude"] = this.longitude !== undefined ? this.longitude : <any>null;
+        data["speed"] = this.speed !== undefined ? this.speed : <any>null;
         return data; 
     }
 }
@@ -259,6 +266,7 @@ export interface ILocationRequest {
     droneId: string;
     latitude: number;
     longitude: number;
+    speed: number;
 }
 
 export class SwaggerException extends Error {

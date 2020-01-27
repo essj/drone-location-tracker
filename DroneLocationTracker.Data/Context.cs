@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using DroneLocationTracker.Data.Models;
+﻿using DroneLocationTracker.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DroneLocationTracker.Data
 {

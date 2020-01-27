@@ -13,5 +13,8 @@ namespace DroneLocationTracker.Controllers.Locations
 
 		[Required]
 		public DateTimeOffset Timestamp { get; set; }
+
+		[Required]
+		public double Speed { get; set; }
 	}
 }
