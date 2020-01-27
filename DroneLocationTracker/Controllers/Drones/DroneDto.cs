@@ -12,7 +12,6 @@ namespace DroneLocationTracker.Controllers.Drones
 		[Required]
 		public string Name { get; set; }
 
-		[Required]
 		public LocationDto LastLocation { get; set; }
 	}
 }

@@ -176,7 +176,7 @@ export interface ILocationDto {
 export class DroneDto implements IDroneDto {
     droneId!: string;
     name!: string;
-    lastLocation!: LocationDto;
+    lastLocation!: LocationDto | null;
 
     constructor(data?: IDroneDto) {
         if (data) {
@@ -186,16 +186,13 @@ export class DroneDto implements IDroneDto {
             }
             this.lastLocation = data.lastLocation && !(<any>data.lastLocation).toJSON ? new LocationDto(data.lastLocation) : <LocationDto>this.lastLocation; 
         }
-        if (!data) {
-            this.lastLocation = new LocationDto();
-        }
     }
 
     init(_data?: any) {
         if (_data) {
             this.droneId = _data["droneId"] !== undefined ? _data["droneId"] : <any>null;
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
-            this.lastLocation = _data["lastLocation"] ? LocationDto.fromJS(_data["lastLocation"]) : new LocationDto();
+            this.lastLocation = _data["lastLocation"] ? LocationDto.fromJS(_data["lastLocation"]) : <any>null;
         }
     }
 
@@ -218,7 +215,7 @@ export class DroneDto implements IDroneDto {
 export interface IDroneDto {
     droneId: string;
     name: string;
-    lastLocation: ILocationDto;
+    lastLocation: ILocationDto | null;
 }
 
 export class LocationRequest implements ILocationRequest {
